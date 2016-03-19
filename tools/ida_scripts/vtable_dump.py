@@ -216,18 +216,18 @@ def Analyze():
 	while len(overload_stack) > 0:
 		windows_vtable.append(overload_stack.pop())
 	
-	print "\nVTable for %s: (0, 0)" % (classname)
+	print "\nVTable for {0!s}: (0, 0)".format((classname))
 	print " Lin  Win Function"
 	for i, v in enumerate(linux_vtable):
 		if "__cxa_pure_virtual" in v:
-			print "P%3d" % (i)
+			print "P{0:3d}".format((i))
 			continue
 		
 		winindex = windows_vtable.index(v) if v in windows_vtable else None
 		if winindex is not None:
-			print "%4d %4d %s" % (i, winindex, v)
+			print "{0:4d} {1:4d} {2!s}".format(i, winindex, v)
 		else:
-			print "%4d      %s" % (i, v)
+			print "{0:4d}      {1!s}".format(i, v)
 	
 	for k in temp_other_windows_vtables:
 		for i, v in enumerate(temp_other_windows_vtables[k]):
@@ -260,18 +260,18 @@ def Analyze():
 			prev_symbol = v
 	
 	for k in other_linux_vtables:
-		print "\nVTable for %s: (%d, %d)" % (offsetdata[k], offsetdata.keys().index(k) + 1, k)
+		print "\nVTable for {0!s}: ({1:d}, {2:d})".format(offsetdata[k], offsetdata.keys().index(k) + 1, k)
 		print " Lin  Win Function"
 		for i, v in enumerate(other_linux_vtables[k]):
 			if "__cxa_pure_virtual" in v:
-				print "P%3d" % (i)
+				print "P{0:3d}".format((i))
 				continue
 			
 			winindex = other_windows_vtables[k].index(v)
 			if v not in other_thunk_linux_vtables[k]:
-				print "%4d %4d %s" % (i, winindex, v)
+				print "{0:4d} {1:4d} {2!s}".format(i, winindex, v)
 			else:
-				print "T%3d %4d %s" % (i, winindex, v)
+				print "T{0:3d} {1:4d} {2!s}".format(i, winindex, v)
 	
 	SetStatus(IDA_STATUS_READY)
 
